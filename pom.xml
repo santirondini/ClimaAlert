@@ -3,15 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ar.edu.utn.frba.ddsi</groupId>
-  <artifactId>ddsi-tp-template</artifactId>
+  <artifactId>ClimaAlert</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>ddsi-tp-template</name>
   <url>https://github.com/dds-utn</url>
   <modules>
-    <module>common-lib</module>
-    <module>donaciones-service</module>
+    <module>clima-service</module>
     <module>notificaciones-service</module>
   </modules>
 
@@ -57,6 +56,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
   </dependencies>
 
