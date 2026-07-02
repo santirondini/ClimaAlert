@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.ddsi.common.dtos;
+package ar.edu.utn.frba.ddsi.common.dtos.api;
 
 import lombok.Data;
 

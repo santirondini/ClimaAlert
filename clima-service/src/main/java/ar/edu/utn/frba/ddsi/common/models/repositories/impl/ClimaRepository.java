@@ -11,7 +11,16 @@ public class ClimaRepository implements IClimaRepository{
 
     private List<RegistroClima> registroClimas;
 
+    @Override
     public void guardarRegistroClimatico(RegistroClima registro) {
         this.registroClimas.add(registro);
+    }
+
+    @Override
+    public RegistroClima obtenerUltimoRegistro() {
+        if (this.registroClimas.isEmpty()) {
+            return null;
+        }
+        return this.registroClimas.get(this.registroClimas.size() - 1);
     }
 }

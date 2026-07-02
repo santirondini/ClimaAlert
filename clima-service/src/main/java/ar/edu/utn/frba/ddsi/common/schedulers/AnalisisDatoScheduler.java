@@ -7,13 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AnalisisDatosScheduler {
+public class AnalisisDatoScheduler {
 
-    private ClimaService climaService;
+    private final ClimaService climaService;
 
-    @Scheduled(fixedRate = 300000) // cada 5 minutos
-    public void obtenerDatosClimaticos() {
-        climaService.obtenerDatosClimaticos();
+    @Scheduled(fixedRate = 6000)
+    public void analizarDatos() {
+        // Lógica para obtener datos climáticos
     }
-
 }

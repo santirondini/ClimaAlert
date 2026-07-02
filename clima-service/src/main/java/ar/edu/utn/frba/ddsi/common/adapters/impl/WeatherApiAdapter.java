@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.ddsi.common.adapters.impl;
 
 import ar.edu.utn.frba.ddsi.common.adapters.IProvedorClimaAdapter;
-import ar.edu.utn.frba.ddsi.common.dtos.ClimaResponseDTO;
+import ar.edu.utn.frba.ddsi.common.dtos.api.ClimaResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;

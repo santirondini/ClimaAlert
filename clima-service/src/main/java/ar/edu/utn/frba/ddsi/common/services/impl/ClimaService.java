@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.ddsi.common.services.impl;
 
 import ar.edu.utn.frba.ddsi.common.adapters.IProvedorClimaAdapter;
-import ar.edu.utn.frba.ddsi.common.dtos.ClimaResponseDTO;
-import ar.edu.utn.frba.ddsi.common.dtos.LocationDTO;
+import ar.edu.utn.frba.ddsi.common.dtos.api.ClimaResponseDTO;
+import ar.edu.utn.frba.ddsi.common.events.AlertaEventoPublisher;
 import ar.edu.utn.frba.ddsi.common.models.entities.RegistroClima;
 import ar.edu.utn.frba.ddsi.common.models.repositories.IClimaRepository;
 import ar.edu.utn.frba.ddsi.common.services.IClimaService;
@@ -17,12 +17,11 @@ public class ClimaService implements IClimaService {
 
     @Autowired
     private IClimaRepository climaRepository;
-    @Autowired
     private IProvedorClimaAdapter climaAdapter;
-
+    private AlertaEventoPublisher alertaEventoPublisher;
     private final String ciudad = "Buenos Aires";
 
-    private RegistroClima dtoToRegistroClima(ClimaResponseDTO climaResponseDTO){
+    private RegistroClima dtoToRegistroClima(ClimaResponseDTO climaResponseDTO) {
         RegistroClima registro = new RegistroClima();
 
         // Extraemos los datos necesarios desde la estructura anidada del DTO
@@ -38,12 +37,24 @@ public class ClimaService implements IClimaService {
     }
 
     @Override
-    public void obtenerDatosClimaticos(){
-        ClimaResponseDTO dto = climaAdapter.obtenerClimaActual(this.ciudad);
+    public void obtenerDatosClimaticos() {
+        ClimaResponseDTO dto = this.climaAdapter.obtenerClimaActual(this.ciudad);
         RegistroClima registro = this.dtoToRegistroClima(dto);
         climaRepository.guardarRegistroClimatico(registro);
     }
+
+    @Override
+    public String analizarDatos() {
+        RegistroClima ultimoRegistro = climaRepository.obtenerUltimoRegistro();
+        if (ultimoRegistro == null) {
+            return "No hay registros climaticos registrados en el sistma";
+        }
+        this.alertaEventoPublisher.publicarAlerta(ultimoRegistro);
+        return ultimoRegistro.esAlerta() ? "Se ha detectado una alerta climática." : "No se ha detectado ninguna alerta climática.";
+
+    }
 }
+
 
 
 

@@ -14,7 +14,7 @@ public class RegistroClima {
     private Double temperatura;
     private Double humedad;
 
-    public Boolean esAlerta(Double temperatura, Double humedad){
-        return temperatura > 30.0 && humedad > 60.0;
+    public Boolean esAlerta(){
+        return this.temperatura > 30.0 && this.humedad > 60.0;
     }
 }
