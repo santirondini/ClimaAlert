@@ -13,6 +13,6 @@ public class AnalisisDatoScheduler {
 
     @Scheduled(fixedRate = 6000)
     public void analizarDatos() {
-        // Lógica para obtener datos climáticos
+        this.climaService.analizarDatos();
     }
 }

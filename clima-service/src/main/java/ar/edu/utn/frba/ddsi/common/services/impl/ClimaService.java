@@ -49,9 +49,11 @@ public class ClimaService implements IClimaService {
         if (ultimoRegistro == null) {
             return "No hay registros climaticos registrados en el sistma";
         }
-        this.alertaEventoPublisher.publicarAlerta(ultimoRegistro);
-        return ultimoRegistro.esAlerta() ? "Se ha detectado una alerta climática." : "No se ha detectado ninguna alerta climática.";
-
+        if(ultimoRegistro.esAlerta()) {
+            this.alertaEventoPublisher.publicarAlerta(ultimoRegistro);
+            return "Se ha detectado una alerta";
+        }
+        return "No se ha detectado ninguna alerta climática.";
     }
 }
 
