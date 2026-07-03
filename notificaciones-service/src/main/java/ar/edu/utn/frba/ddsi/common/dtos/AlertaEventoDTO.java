@@ -8,4 +8,13 @@ public class AlertaEventoDTO {
     private Double temperatura;
     private Double humedad;
     private String mensaje;
+
+    public String toString(){
+        return "AlertaEventoDTO{" +
+                "ubicacion='" + ubicacion + '\'' +
+                ", temperatura=" + temperatura +
+                ", humedad=" + humedad +
+                ", mensaje='" + mensaje + '\'' +
+                '}';
+    }
 }

@@ -5,6 +5,7 @@ import ar.edu.utn.frba.ddsi.common.dtos.AlertaEventoDTO;
 import ar.edu.utn.frba.ddsi.common.services.INotificacionesService;
 import ar.edu.utn.frba.ddsi.common.services.impl.NotificacionesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,8 @@ public class AlertaListener {
     @Autowired
     private final INotificacionesService notificacionesService;
 
-    @RabbitListener(queues = "${climaAlert.events.queue}")
-    public void onAlertaReciiba(AlertaEventoDTO alertaEventoDTO){
-
+    @RabbitListener(queues = "${climaAlert.events.queues.alerta-registrada}")    public void onAlertaReciba(AlertaEventoDTO alertaEventoDTO){
+        log.info("Se recibió la alerta: " + alertaEventoDTO.toString());
         try {
             this.notificacionesService.enviarNotificacion(alertaEventoDTO);
             log.info("Se envió la notificación");
