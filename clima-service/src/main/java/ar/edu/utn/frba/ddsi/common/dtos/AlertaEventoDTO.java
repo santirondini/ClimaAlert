@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class AlertaEventoDTO {
-    private String ubicacion;
-    private Double temperatura;
-    private Double humedad;
-    private String mensaje;
+    public String ubicacion;
+    public Double temperatura;
+    public Double humedad;
+    public String mensaje;
 }

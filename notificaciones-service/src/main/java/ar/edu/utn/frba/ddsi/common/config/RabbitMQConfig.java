@@ -1,34 +1,34 @@
 package ar.edu.utn.frba.ddsi.common.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.Queue;
-
+@Configuration
 public class RabbitMQConfig {
 
-    @Value("${climaAlert.events.exchange}")
-    private String eventosExhangeName;
-
-    @Value("${climaAlert.events.routing-keys.alerta-registrada}")
-    private String alertaRegistradaRoutingKey;
-
-    @Value("${climaAlert.events.queues.alerta-registrada}")
-    private String alertaRegistradaQueueName;
-
     @Bean
-    public DirectExchange eventosExchange() {
-        return new DirectExchange(eventosExchangeName, true, false);
+    public DirectExchange eventosExchange(@Value("${climaAlert.events.exchange}") String name) {
+        return new DirectExchange(name, true, false);
     }
 
     @Bean
-    public Queue ventaRegistradaQueue() {
-        return QueueBuilder.durable(ventaRegistradaQueueName).build();
+    public Queue alertaRegistradaQueue(@Value("${climaAlert.events.queues.alerta-registrada}") String name) {
+        return QueueBuilder.durable(name).build();
     }
 
     @Bean
-    public Binding alertaRegistradaBinding(Queue alertaRegistradaQueue, DirectExchange eventosExchange) {
-        return BindingBuilder.bind(alertaRegistradaQueue).to(eventosExchange).with(alertaRegistradaRoutingKey);
+    public Binding alertaRegistradaBinding(Queue alertaRegistradaQueue,
+                                           DirectExchange eventosExchange,
+                                           @Value("${climaAlert.events.routing-keys.alerta-registrada}") String ruta) {
+        return BindingBuilder.bind(alertaRegistradaQueue).to(eventosExchange).with(ruta);
     }
 
     @Bean

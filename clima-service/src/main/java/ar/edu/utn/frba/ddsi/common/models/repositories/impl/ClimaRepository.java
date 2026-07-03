@@ -4,12 +4,13 @@ import ar.edu.utn.frba.ddsi.common.models.entities.RegistroClima;
 import ar.edu.utn.frba.ddsi.common.models.repositories.IClimaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ClimaRepository implements IClimaRepository{
 
-    private List<RegistroClima> registroClimas;
+    private List<RegistroClima> registroClimas = new ArrayList<>();
 
     @Override
     public void guardarRegistroClimatico(RegistroClima registro) {

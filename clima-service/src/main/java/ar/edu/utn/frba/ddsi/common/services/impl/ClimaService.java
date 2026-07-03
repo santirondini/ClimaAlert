@@ -6,19 +6,24 @@ import ar.edu.utn.frba.ddsi.common.events.AlertaEventoPublisher;
 import ar.edu.utn.frba.ddsi.common.models.entities.RegistroClima;
 import ar.edu.utn.frba.ddsi.common.models.repositories.IClimaRepository;
 import ar.edu.utn.frba.ddsi.common.services.IClimaService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class ClimaService implements IClimaService {
 
     @Autowired
     private IClimaRepository climaRepository;
-    private IProvedorClimaAdapter climaAdapter;
-    private AlertaEventoPublisher alertaEventoPublisher;
+
+    private final IProvedorClimaAdapter climaAdapter;
+    private final AlertaEventoPublisher alertaEventoPublisher;
     private final String ciudad = "Buenos Aires";
 
     private RegistroClima dtoToRegistroClima(ClimaResponseDTO climaResponseDTO) {
@@ -40,6 +45,11 @@ public class ClimaService implements IClimaService {
     public void obtenerDatosClimaticos() {
         ClimaResponseDTO dto = this.climaAdapter.obtenerClimaActual(this.ciudad);
         RegistroClima registro = this.dtoToRegistroClima(dto);
+        log.info("Obteniendo datos climaticos: "
+                + registro.getUbicacion() + ", "
+                + registro.getTemperatura() + "°C, "
+                + registro.getHumedad() + "%, "
+                + registro.getFechaHora());
         climaRepository.guardarRegistroClimatico(registro);
     }
 
@@ -47,9 +57,16 @@ public class ClimaService implements IClimaService {
     public String analizarDatos() {
         RegistroClima ultimoRegistro = climaRepository.obtenerUltimoRegistro();
         if (ultimoRegistro == null) {
-            return "No hay registros climaticos registrados en el sistma";
+            log.info("No hay registros climaticos registrados en el sistema");
+            return "No hay registros climaticos registrados en el sistema";
         }
         if(ultimoRegistro.esAlerta()) {
+            log.info("Se ha detectado una alerta climática: "
+                + ultimoRegistro.getUbicacion() + ", "
+                + ultimoRegistro.getTemperatura() + "°C, "
+                + ultimoRegistro.getHumedad() + "%, "
+                + ultimoRegistro.getFechaHora())
+            ;
             this.alertaEventoPublisher.publicarAlerta(ultimoRegistro);
             return "Se ha detectado una alerta";
         }

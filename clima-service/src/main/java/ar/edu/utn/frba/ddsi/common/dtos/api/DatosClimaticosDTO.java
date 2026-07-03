@@ -1,10 +1,14 @@
 package ar.edu.utn.frba.ddsi.common.dtos.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class DatosClimaticosDTO {
-    private Double temp_c;
-    private Double humidity;
-    private String last_updated;
+    @JsonProperty("temp_c")
+    public Double temp_c;
+    @JsonProperty("humidity")
+    public Double humidity;
+    @JsonProperty("last_updated")
+    public String last_updated;
 }
