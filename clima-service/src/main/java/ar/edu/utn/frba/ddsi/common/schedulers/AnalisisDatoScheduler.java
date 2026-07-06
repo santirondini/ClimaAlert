@@ -12,7 +12,7 @@ public class AnalisisDatoScheduler {
 
     private final ClimaService climaService;
 
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedRate = 5000)
     public void analizarDatos() {
         try {
         log.info("Analizando datos");

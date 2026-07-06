@@ -9,6 +9,7 @@ import ar.edu.utn.frba.ddsi.common.services.IClimaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,6 +26,12 @@ public class ClimaService implements IClimaService {
     private final IProvedorClimaAdapter climaAdapter;
     private final AlertaEventoPublisher alertaEventoPublisher;
     private final String ciudad = "Buenos Aires";
+
+    @Value("${TEMPERATURA_LIMITE:35.0}")
+    private Double temperaturaLimite;
+
+    @Value("${HUMEDAD_LIMITE:60.0}")
+    private Double humedadLimite;
 
     private RegistroClima dtoToRegistroClima(ClimaResponseDTO climaResponseDTO) {
         RegistroClima registro = new RegistroClima();
@@ -60,7 +67,7 @@ public class ClimaService implements IClimaService {
             log.info("No hay registros climaticos registrados en el sistema");
             return "No hay registros climaticos registrados en el sistema";
         }
-        if(ultimoRegistro.esAlerta()) {
+        if(ultimoRegistro.esAlerta(temperaturaLimite, humedadLimite)) {
             log.info("Se ha detectado una alerta climática: "
                 + ultimoRegistro.getUbicacion() + ", "
                 + ultimoRegistro.getTemperatura() + "°C, "
